@@ -1,6 +1,6 @@
 <?php include 'dbconnect.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
+// error_reporting(E_ALL);
+// ini_set('display_errors', 'on');
 session_start();
 
 // Check if the user is logged in, if not then redirect him to login page
@@ -31,6 +31,7 @@ function console_log($output, $with_script_tags = true)
 <head>
 	<meta charset='UTF-8'>
 	<meta name="robots" content="noindex">
+	<title>CHATAPP</title>
 	<script src="https://use.typekit.net/hoy3lrg.js"></script>
 	<script>
 		try {
@@ -68,7 +69,7 @@ Website: http://emilcarlsson.se/
 					$row = mysqli_fetch_assoc($sql);
 					$_SESSION["user_id"] = $row['user_id'];
 					?>
-					<img id="profile-img" src="../assets/images/faces/1.jpg" class="online" alt="" />
+					<img id="profile-img" src="avatar.jpg" class="online" alt="" />
 					<p><?php echo $row['first_name'] . " " . $row['last_name'] ?></p>
 					<i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
 					<div id="status-options">
@@ -286,13 +287,18 @@ Website: http://emilcarlsson.se/
 								// formData = new FormData(form)
 								// console.log(formData)
 							}
+							const fileUpload = document.querySelector("#fileupload");
+							const attachmentBtn = document.querySelector("#frame > div.content > form > div > div:nth-child(1) > button");
 
 							sendBtn.onclick = () => { // Send the message to database
 								// console.log(inputField.value)
-								if (fileUpload.files) {
+								if (!!fileUpload.files[0]) {
 									// console.log(fileUpload.files[0]); 
+									console.log("run file")
 									upload(fileUpload.files[0])
+
 								} else {
+									console.log("run text")
 									$.ajax({
 										url: "php/insert.php",
 										method: "POST",
@@ -313,9 +319,10 @@ Website: http://emilcarlsson.se/
 
 							}
 
+
 							function upload(ufile) {
 								var file = ufile
-								console.log(file);
+								// console.log(file);
 								var fd = new FormData();
 								// fd.append("incoming_id", incoming_id);
 								fd.append("file", file);
@@ -340,7 +347,7 @@ Website: http://emilcarlsson.se/
 										// document.body.appendChild(image);
 										refreshChatRoom();
 										inputField.value = ""
-										fileUpload.value = ""; //clear the input once submitted
+										fileUpload.files[0] = ""; //clear the input once submitted
 										scrollToBottom()
 										console.log(xhr.response);
 									};
@@ -363,50 +370,51 @@ Website: http://emilcarlsson.se/
 				}
 			});
 
-		function refreshUserList() {
-			$.ajax({
-				url: "php/userlist.php",
-				method: "GET",
-				success: function(result) {
-					// console.log("Obtain function runs here!");
-					usersList.innerHTML = result;
-				},
-				error: function(e) {
-					console.log(e);
-				}
-			})
-		}
-		refreshUserList(); setInterval(refreshUserList, 60000);
-
-		searchBar.onkeyup = () => {
-			let searchTerm = searchBar.value;
-			if (searchTerm != "") {
-				searchBar.classList.add("active");
-			} else {
-				searchBar.classList.remove("active");
+			function refreshUserList() {
+				$.ajax({
+					url: "php/userlist.php",
+					method: "GET",
+					success: function(result) {
+						// console.log("Obtain function runs here!");
+						usersList.innerHTML = result;
+					},
+					error: function(e) {
+						console.log(e);
+					}
+				})
 			}
-			let xhr = new XMLHttpRequest();
-			xhr.open("POST", "php/search.php", true);
-			xhr.onload = () => {
-				if (xhr.readyState === XMLHttpRequest.DONE) {
-					if (xhr.status === 200) {
-						let data = xhr.response;
-						//console.log(data);
-						if (searchBar.classList.contains("active")) {
-							usersList.innerHTML = data;
-							console.log(searchTerm)
-						} else {
-							refreshUserList();
+			refreshUserList();
+			setInterval(refreshUserList, 60000);
+
+			searchBar.onkeyup = () => {
+				let searchTerm = searchBar.value;
+				if (searchTerm != "") {
+					searchBar.classList.add("active");
+				} else {
+					searchBar.classList.remove("active");
+				}
+				let xhr = new XMLHttpRequest();
+				xhr.open("POST", "php/search.php", true);
+				xhr.onload = () => {
+					if (xhr.readyState === XMLHttpRequest.DONE) {
+						if (xhr.status === 200) {
+							let data = xhr.response;
+							//console.log(data);
+							if (searchBar.classList.contains("active")) {
+								usersList.innerHTML = data;
+								console.log(searchTerm)
+							} else {
+								refreshUserList();
+							}
 						}
 					}
-				}
+				};
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhr.send("searchTerm=" + searchTerm);
 			};
-			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhr.send("searchTerm=" + searchTerm);
-		};
 
 
-	})
+		})
 	</script>
 	<script>
 		$(".messages").animate({

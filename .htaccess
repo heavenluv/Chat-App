@@ -1,0 +1,6 @@
+
+# HTID:18425278: DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES BELOW
+# php_value display_errors 1
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+# DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES ABOVE HTID:18425278:

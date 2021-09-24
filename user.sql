@@ -34,9 +34,8 @@ CREATE TABLE `user` (
   `username` varchar(250) DEFAULT NULL,
   `email` varchar(250) DEFAULT NULL,
   `password` varchar(250) DEFAULT NULL,
-  `role` varchar(50) DEFAULT NULL,
   `user_profile` varchar(250) CHARACTER SET utf8 DEFAULT NULL,
-  `status` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -55,11 +54,7 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `user_id` int(250) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

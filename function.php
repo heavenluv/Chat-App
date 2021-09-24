@@ -27,6 +27,8 @@ function add_user($conn)
     username='$username', password='$pass', user_profile='$img', status='online'";
     if (mysqli_query($conn, $sql)) {
         header('location:index.php');
+    } else {
+        print_r($conn->error);
     }
 }
 
