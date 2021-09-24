@@ -12,7 +12,7 @@
         $row = mysqli_fetch_assoc($targetuser);
         $output .= '
                 <div class="contact-profile">
-                    <img src="../assets/images/faces/1.jpg" alt="" />
+                    <img src="avatar.jpg" alt="" />
                     <p class="person_received">' .$row['first_name'] . " " . $row['last_name'] . '</p>
                     <div class="social-media">
                         <i class="fa fa-facebook" aria-hidden="true"></i>

@@ -1,6 +1,10 @@
 <?php
 session_start();
+// header('Content-Length:' . Filesize($cache_file));
+
 include "../dbconnect.php";
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
 $outgoing_id = $_SESSION['user_id'];
 $incoming_id = mysqli_real_escape_string($conn, $_SESSION["target_chat_user"]);
 //File upload part below
@@ -12,7 +16,7 @@ if(!empty($_FILES)){
     $imgExts = array("jpg", "jpeg", "gif", "png");
     $isImgOrNot = true;
     $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-    $target_dir = "uploads/";
+    $target_dir = "../uploads/";
     if (in_array($extension,$imgExts)){
         $isImgOrNot = 1;
     } else {
@@ -30,7 +34,11 @@ if(!empty($_FILES)){
                 if(move_uploaded_file($_source_path, $target_path)){
                     $sql = mysqli_query($conn, "INSERT INTO chat (incoming_msg_id, outgoing_msg_id, uploadfile, img_or_not, filename)
                     VALUES ('$incoming_id', '$outgoing_id', '$target_path','$isImgOrNot', '$_filename')") or die("Cannot upload files!");
+                } else {
+                    echo "Cannot move upload" . $_FILES["file"]["name"] . " ". $_FILES["file"]["error"];
                 }
+            } else {
+                echo "Not uploaded" . $_FILES["file"]["error"];
             }
 
             /*

@@ -8,7 +8,7 @@
     $listed_user = mysqli_query($conn, "SELECT * FROM user WHERE NOT user_id='$current_id'");
     $output = "";
     if (mysqli_num_rows($listed_user) == 0) {
-        echo "ERROR: " . mysqli_error($conn);
+        echo "No other user!";
 
     } elseif (mysqli_num_rows($listed_user) > 0) {
         while ($row = mysqli_fetch_assoc($listed_user)) {
