@@ -1,9 +1,9 @@
 <?php
 //create database
 $servername = "localhost";
-$username = "root";
+$username = "id17646995_root";
 $password = "}{q3\{Z)/roXuK9Y";
-$dbname = "db_test";
+$dbname = "id17646995_db_test";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
